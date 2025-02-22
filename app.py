@@ -2,6 +2,9 @@ import streamlit as st
 import datetime
 import pandas as pd
 
+# Cargar el GIF de reloj de arena
+st.image('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjg3NmRhZGQwZjFkYTg5MGY2ZmQ5YzY3N2E1Y2ZjZWU0MTM5NDc1NWM4YiZjdD1n/8QNvAwT5AYvDb9Dtm8/giphy.gif', width=100)
+
 # Crear una lista con los años de nacimiento por defecto
 años_nacimiento_por_defecto = [1998, 1966, 1969, 2002, 1996]
 
