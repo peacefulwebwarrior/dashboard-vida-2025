@@ -55,8 +55,8 @@ def calcular_tiempos(año_nacimiento):
         "Próximo Cumpleaños": f"{años_restantes_cumple} años, {meses_restantes_cumple} meses, {dias_restantes_cumple_final} días"
     }
 
-# Lista de edades objetivo (30, 50, 70, 90 años y esperanza de vida en Chile)
-edades = [30, 50, 70, 90, 77.16]  # Esperanza de vida en Chile (77.16 años)
+# Lista de edades objetivo (30, 50, 70, 77.16 y 90 años)
+edades = [70, 77.16, 90]  # Edad objetivo en orden de menor a mayor
 
 # Crear la lista para almacenar los resultados de todas las personas
 resultados_totales = []
