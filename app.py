@@ -68,10 +68,9 @@ for edad_objetivo in edades:
 # Crear un DataFrame para mostrar los resultados en una tabla
 df_resultados = pd.DataFrame(resultados, columns=["Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes", "Color"])
 
-# Estilizar la tabla para que los colores se muestren
+# Función de estilo para colorear celdas
 def aplicar_colores(x):
-    df_style = x.style.applymap(lambda color: color, subset=["Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes"])
-    return df_style
+    return x.style.applymap(lambda color: color, subset=["Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes"])
 
-# Mostrar la tabla con los resultados y el estilo aplicado
-st.write(aplicar_colores(df_resultados))
+# Mostrar la tabla con los resultados y el estilo aplicado usando st.dataframe()
+st.dataframe(aplicar_colores(df_resultados))
