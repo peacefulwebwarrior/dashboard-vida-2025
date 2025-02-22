@@ -6,15 +6,22 @@ import pandas as pd
 años_nacimiento_por_defecto = [1998, 1966, 1969, 2002, 1996]
 
 # Título de la aplicación
-st.title("DEATH THERAPY")
+st.title("Porcentaje de Vida Transcurrido por Persona")
 
 # Mostrar las opciones para que el usuario pueda elegir el año de nacimiento de cada persona
 años_nacimiento = []
+nombres_personas = []  # Lista para guardar los nombres
+
 for i in range(1, 6):
+    # Seleccionar el año de nacimiento para cada persona
     año = st.selectbox(f"Año de nacimiento de Persona {i}:", 
                        options=[1998, 1966, 1969, 2002, 1996], 
                        index=años_nacimiento_por_defecto.index(años_nacimiento_por_defecto[i-1]))
     años_nacimiento.append(año)
+    
+    # Ingresar el nombre de cada persona
+    nombre = st.text_input(f"Nombre de Persona {i}:", value=f"Persona {i}")
+    nombres_personas.append(nombre)
 
 # Función para calcular la edad y los detalles
 def calcular_tiempos(año_nacimiento):
@@ -55,7 +62,7 @@ edades = [30, 50, 70, 90, 77.16]  # Esperanza de vida en Chile (77.16 años)
 resultados_totales = []
 
 # Calcular los resultados para cada persona
-for idx, año in enumerate(años_nacimiento):
+for idx, (año, nombre) in enumerate(zip(años_nacimiento, nombres_personas)):
     resultados = []
     for edad_objetivo in edades:
         # Obtener el tiempo transcurrido para la persona actual
@@ -72,7 +79,7 @@ for idx, año in enumerate(años_nacimiento):
         años_restantes = (edad_objetivo - tiempos["Años Transcurridos"])
         
         # Guardar los resultados para la persona actual
-        resultados.append([f"Persona {idx + 1}", edad_objetivo, porcentaje_vivido, trimestres_restantes, años_restantes])
+        resultados.append([nombre, edad_objetivo, porcentaje_vivido, trimestres_restantes, años_restantes])
     
     resultados_totales.extend(resultados)
 
