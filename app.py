@@ -76,12 +76,12 @@ for idx, (año, nombre) in enumerate(zip(años_nacimiento, nombres_personas)):
         años_restantes = (edad_objetivo - tiempos["Años Transcurridos"])
         
         # Guardar los resultados para la persona actual
-        resultados.append([nombre, edad_objetivo, porcentaje_vivido, años_restantes])
+        resultados.append([nombre, tiempos["Edad"], edad_objetivo, porcentaje_vivido, años_restantes])
     
     resultados_totales.extend(resultados)
 
 # Crear un DataFrame con los resultados
-df_resultados = pd.DataFrame(resultados_totales, columns=["Persona", "Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Años Restantes"])
+df_resultados = pd.DataFrame(resultados_totales, columns=["Persona", "Edad Actual", "Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Años Restantes"])
 
 # Filtrar los resultados donde el porcentaje de vida vivido es menor al 100%
 df_resultados_filtrados = df_resultados[df_resultados["Porcentaje de Vida Vivido (%)"] < 100]
