@@ -1,7 +1,6 @@
 import streamlit as st
 import datetime
 import pandas as pd
-import time
 
 # Establecer la fecha base como 14 de abril de 1998
 fecha_nacimiento = datetime.date(1998, 4, 14)
@@ -51,11 +50,11 @@ for edad_objetivo in edades:
     
     # Cambiar color dependiendo del porcentaje vivido
     if porcentaje_vivido > 80:
-        color = "red"
+        color = "background-color: red; color: white;"
     elif porcentaje_vivido > 50:
-        color = "orange"
+        color = "background-color: orange; color: white;"
     else:
-        color = "green"
+        color = "background-color: green; color: white;"
     
     # Trimestres restantes
     trimestres_restantes = ((edad_objetivo * 365 - dias_vividos) / 90)  # 1 trimestre = 90 días
@@ -68,12 +67,11 @@ for edad_objetivo in edades:
 
 # Crear un DataFrame para mostrar los resultados en una tabla
 df_resultados = pd.DataFrame(resultados, columns=["Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes", "Color"])
-df_resultados["Porcentaje de Vida Vivido (%)"] = df_resultados["Porcentaje de Vida Vivido (%)"].round(2)
-df_resultados["Trimestres Restantes"] = df_resultados["Trimestres Restantes"].round(0)
-df_resultados["Años Restantes"] = df_resultados["Años Restantes"].round(0)
 
-# Mostrar la tabla con los resultados y cambio de color en los textos
-for i, row in df_resultados.iterrows():
-    st.markdown(f'<p style="color:{row["Color"]}">{row["Edad Objetivo"]} años: {row["Porcentaje de Vida Vivido (%)"]}%</p>', unsafe_allow_html=True)
+# Estilizar la tabla para que los colores se muestren
+def aplicar_colores(x):
+    df_style = x.style.applymap(lambda color: color, subset=["Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes"])
+    return df_style
 
-st.write(df_resultados)
+# Mostrar la tabla con los resultados y el estilo aplicado
+st.write(aplicar_colores(df_resultados))
