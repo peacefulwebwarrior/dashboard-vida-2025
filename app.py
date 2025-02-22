@@ -48,14 +48,6 @@ for edad_objetivo in edades:
     # Porcentaje de vida vivido hasta la edad objetivo
     porcentaje_vivido = (dias_vividos / total_vida_objetivo) * 100
     
-    # Cambiar color dependiendo del porcentaje vivido
-    if porcentaje_vivido > 80:
-        color = "background-color: red; color: white;"
-    elif porcentaje_vivido > 50:
-        color = "background-color: orange; color: white;"
-    else:
-        color = "background-color: green; color: white;"
-    
     # Trimestres restantes
     trimestres_restantes = ((edad_objetivo * 365 - dias_vividos) / 90)  # 1 trimestre = 90 días
     
@@ -63,15 +55,10 @@ for edad_objetivo in edades:
     años_restantes = (edad_objetivo - años_transcurridos)
     
     # Guardar los resultados en la lista
-    resultados.append([edad_objetivo, porcentaje_vivido, trimestres_restantes, años_restantes, color])
+    resultados.append([edad_objetivo, porcentaje_vivido, trimestres_restantes, años_restantes])
 
 # Crear un DataFrame para mostrar los resultados en una tabla
-df_resultados = pd.DataFrame(resultados, columns=["Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes", "Color"])
+df_resultados = pd.DataFrame(resultados, columns=["Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes"])
 
-# Función de estilo para colorear celdas
-def aplicar_colores(x):
-    # Estilizamos solo las columnas con valores numéricos
-    return x.style.applymap(lambda color: color, subset=["Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes"])
-
-# Mostrar la tabla con los resultados y el estilo aplicado usando st.dataframe()
-st.dataframe(aplicar_colores(df_resultados))
+# Mostrar la tabla con los resultados
+st.dataframe(df_resultados)
