@@ -86,5 +86,8 @@ for idx, (año, nombre) in enumerate(zip(años_nacimiento, nombres_personas)):
 # Crear un DataFrame con los resultados
 df_resultados = pd.DataFrame(resultados_totales, columns=["Persona", "Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes"])
 
-# Mostrar la tabla con los resultados
-st.dataframe(df_resultados)
+# Filtrar los resultados donde el porcentaje de vida vivido es menor al 100%
+df_resultados_filtrados = df_resultados[df_resultados["Porcentaje de Vida Vivido (%)"] < 100]
+
+# Mostrar la tabla con los resultados filtrados
+st.dataframe(df_resultados_filtrados)
