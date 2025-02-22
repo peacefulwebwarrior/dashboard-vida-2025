@@ -1,28 +1,25 @@
 import streamlit as st
-import matplotlib.pyplot as plt
-import numpy as np
+import datetime
 
-st.title("📊 Dashboard de Vida")
+# Toma la fecha de nacimiento como input
+fecha_nacimiento = st.date_input('Selecciona tu fecha de nacimiento', datetime.date(1995, 1, 1))
 
-# Entrada de edad actual
-edad_actual = st.slider("Selecciona tu edad", 0, 100, 25)
+# Calcula la edad a partir de la fecha de nacimiento
+hoy = datetime.date.today()
+edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
 
-# Opciones de esperanza de vida
-edades_futuras = [30, 40, 50, 60, 70, 80, 90, 100]
+# Cálculo de porcentaje de vida
+total_vida_30 = 30 * 365  # Total de días hasta los 30 años
+dias_vividos = (hoy - fecha_nacimiento).days
+porcentaje_vivido = (dias_vividos / total_vida_30) * 100
 
-# Calcular datos
-data = {edad: (edad_actual / edad) * 100 for edad in edades_futuras}
-trimestres = {edad: (edad * 4 - edad_actual * 4) for edad in edades_futuras}
+# Cálculo de trimestres restantes
+trimestres_restantes_30 = ((30 * 365 - dias_vividos) / 90)  # 1 trimestre = 90 días
 
-# Mostrar métricas
-st.write(f"🔹 **Edad actual:** {edad_actual} años")
-for edad, pct in data.items():
-    st.write(f"📌 {edad} años: {pct:.1f}% transcurrido, {trimestres[edad]} trimestres restantes")
+# Mostrar la información
+st.title("Porcentaje de Vida Transcurrido")
 
-# Gráfico de barras
-fig, ax = plt.subplots()
-ax.bar(data.keys(), data.values(), color='skyblue')
-ax.set_xlabel("Esperanza de vida")
-ax.set_ylabel("Porcentaje de vida transcurrido")
-ax.set_title("Progreso de vida según expectativa")
-st.pyplot(fig)
+# Mostrar los resultados
+st.write(f"Tu edad actual es: {edad} años.")
+st.write(f"Has vivido el {porcentaje_vivido:.2f}% de tu vida si llegas a los 30 años.")
+st.write(f"Te quedan aproximadamente {trimestres_restantes_30:.0f} trimestres para llegar a los 30 años.")
