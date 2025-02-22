@@ -2,8 +2,8 @@ import streamlit as st
 import datetime
 import pandas as pd
 
-# Cargar el GIF de reloj de arena
-st.image('https://media.giphy.com/media/3ohs4uwjkT0IgjmA2c/giphy.gif', width=100)
+# Cargar el nuevo GIF de reloj de arena
+st.image('https://i.gifer.com/Z30J.gif', width=100)
 
 # Crear las secciones
 seccion = st.selectbox("Selecciona una sección", ["Vista Principal", "Modificar Datos"])
