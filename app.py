@@ -101,4 +101,12 @@ if seccion == "Vista Principal":
     df_resultados_filtrados = df_resultados[df_resultados["Porcentaje de Vida Vivido (%)"] < 100]
 
     # Mostrar la tabla con los resultados filtrados
-    st.dataframe(df_resultados_filtrados)
+    for index, row in df_resultados_filtrados.iterrows():
+        st.write(f"**{row['Persona']}**")
+        st.write(f"Edad actual: {row['Edad Actual']} | Edad Objetivo: {row['Edad Objetivo']} | Años Restantes: {row['Años Restantes']}")
+        
+        # Mostrar barra de progreso del porcentaje de vida vivido
+        st.progress(int(row['Porcentaje de Vida Vivido (%)']))
+
+        # Mostrar el porcentaje de vida vivido
+        st.write(f"Porcentaje de Vida Vivido: {row['Porcentaje de Vida Vivido (%)']:.2f}%")
