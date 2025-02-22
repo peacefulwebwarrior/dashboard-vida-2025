@@ -3,30 +3,10 @@ import datetime
 import pandas as pd
 
 # Cargar el GIF de reloj de arena
-st.image('https://i.gifer.com/Z30J.gif', width=100)
-#
+st.image('https://media.giphy.com/media/3ohs4uwjkT0IgjmA2c/giphy.gif', width=100)
 
-
-# Crear una lista con los años de nacimiento por defecto
-años_nacimiento_por_defecto = [1998, 1966, 1969, 2002, 1996]
-
-# Título de la aplicación
-st.title("Porcentaje de Vida Transcurrido por Persona")
-
-# Mostrar las opciones para que el usuario pueda elegir el año de nacimiento de cada persona
-años_nacimiento = []
-nombres_personas = []  # Lista para guardar los nombres
-
-for i in range(1, 6):
-    # Seleccionar el año de nacimiento para cada persona
-    año = st.selectbox(f"Año de nacimiento de Persona {i}:", 
-                       options=[1998, 1966, 1969, 2002, 1996], 
-                       index=años_nacimiento_por_defecto.index(años_nacimiento_por_defecto[i-1]))
-    años_nacimiento.append(año)
-    
-    # Ingresar el nombre de cada persona
-    nombre = st.text_input(f"Nombre de Persona {i}:", value=f"Persona {i}")
-    nombres_personas.append(nombre)
+# Crear las secciones
+seccion = st.selectbox("Selecciona una sección", ["Vista Principal", "Modificar Datos"])
 
 # Función para calcular la edad y los detalles
 def calcular_tiempos(año_nacimiento):
@@ -63,33 +43,58 @@ def calcular_tiempos(año_nacimiento):
 # Lista de edades objetivo (30, 50, 70, 77.16 y 90 años)
 edades = [70, 77.16, 90]  # Edad objetivo en orden de menor a mayor
 
-# Crear la lista para almacenar los resultados de todas las personas
-resultados_totales = []
+# Por defecto los años de nacimiento
+años_nacimiento_por_defecto = [1998, 1966, 1969, 2002, 1996]
+nombres_personas_por_defecto = ["Persona 1", "Persona 2", "Persona 3", "Persona 4", "Persona 5"]
 
-# Calcular los resultados para cada persona
-for idx, (año, nombre) in enumerate(zip(años_nacimiento, nombres_personas)):
-    resultados = []
-    for edad_objetivo in edades:
-        # Obtener el tiempo transcurrido para la persona actual
-        tiempos = calcular_tiempos(año)
-        
-        # Total de días hasta la edad objetivo (en años * 365)
-        total_vida_objetivo = edad_objetivo * 365
-        porcentaje_vivido = (tiempos["Días Transcurridos"] / total_vida_objetivo) * 100
-        
-        # Años restantes
-        años_restantes = (edad_objetivo - tiempos["Años Transcurridos"])
-        
-        # Guardar los resultados para la persona actual
-        resultados.append([nombre, tiempos["Edad"], edad_objetivo, porcentaje_vivido, años_restantes])
-    
-    resultados_totales.extend(resultados)
+# Si se selecciona "Modificar Datos"
+if seccion == "Modificar Datos":
+    años_nacimiento = []
+    nombres_personas = []  # Lista para guardar los nombres
+    for i in range(1, 6):
+        # Seleccionar el año de nacimiento para cada persona
+        año = st.selectbox(f"Año de nacimiento de Persona {i}:",
+                           options=[1998, 1966, 1969, 2002, 1996],
+                           index=años_nacimiento_por_defecto.index(años_nacimiento_por_defecto[i-1]))
+        años_nacimiento.append(año)
 
-# Crear un DataFrame con los resultados
-df_resultados = pd.DataFrame(resultados_totales, columns=["Persona", "Edad Actual", "Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Años Restantes"])
+        # Ingresar el nombre de cada persona
+        nombre = st.text_input(f"Nombre de Persona {i}:", value=nombres_personas_por_defecto[i-1])
+        nombres_personas.append(nombre)
 
-# Filtrar los resultados donde el porcentaje de vida vivido es menor al 100%
-df_resultados_filtrados = df_resultados[df_resultados["Porcentaje de Vida Vivido (%)"] < 100]
+    # Botón para guardar los cambios
+    if st.button("Guardar cambios"):
+        st.success("Datos guardados correctamente")
 
-# Mostrar la tabla con los resultados filtrados
-st.dataframe(df_resultados_filtrados)
+# Si se selecciona "Vista Principal"
+if seccion == "Vista Principal":
+    # Lista para almacenar los resultados de todas las personas
+    resultados_totales = []
+
+    # Calcular los resultados para cada persona
+    for idx, (año, nombre) in enumerate(zip(años_nacimiento, nombres_personas)):
+        resultados = []
+        for edad_objetivo in edades:
+            # Obtener el tiempo transcurrido para la persona actual
+            tiempos = calcular_tiempos(año)
+
+            # Total de días hasta la edad objetivo (en años * 365)
+            total_vida_objetivo = edad_objetivo * 365
+            porcentaje_vivido = (tiempos["Días Transcurridos"] / total_vida_objetivo) * 100
+
+            # Años restantes
+            años_restantes = (edad_objetivo - tiempos["Años Transcurridos"])
+
+            # Guardar los resultados para la persona actual
+            resultados.append([nombre, tiempos["Edad"], edad_objetivo, porcentaje_vivido, años_restantes])
+
+        resultados_totales.extend(resultados)
+
+    # Crear un DataFrame con los resultados
+    df_resultados = pd.DataFrame(resultados_totales, columns=["Persona", "Edad Actual", "Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Años Restantes"])
+
+    # Filtrar los resultados donde el porcentaje de vida vivido es menor al 100%
+    df_resultados_filtrados = df_resultados[df_resultados["Porcentaje de Vida Vivido (%)"] < 100]
+
+    # Mostrar la tabla con los resultados filtrados
+    st.dataframe(df_resultados_filtrados)
