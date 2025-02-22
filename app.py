@@ -1,8 +1,9 @@
 import streamlit as st
 import datetime
+import pandas as pd
 
-# Toma la fecha de nacimiento como input
-fecha_nacimiento = st.date_input('Selecciona tu fecha de nacimiento', datetime.date(1995, 1, 1))
+# Establecer la fecha base como 14 de abril de 1998
+fecha_nacimiento = datetime.date(1998, 4, 14)
 
 # Calcula la edad a partir de la fecha de nacimiento
 hoy = datetime.date.today()
@@ -14,13 +15,29 @@ años_transcurridos = dias_transcurridos // 365
 meses_transcurridos = (dias_transcurridos % 365) // 30
 dias_restantes = dias_transcurridos % 30
 
+# Cálculo del próximo cumpleaños
+if (hoy.month, hoy.day) > (fecha_nacimiento.month, fecha_nacimiento.day):
+    proximo_cumple = datetime.date(hoy.year + 1, fecha_nacimiento.month, fecha_nacimiento.day)
+else:
+    proximo_cumple = datetime.date(hoy.year, fecha_nacimiento.month, fecha_nacimiento.day)
+
+# Tiempo restante hasta el próximo cumpleaños
+dias_restantes_cumple = (proximo_cumple - hoy).days
+años_restantes_cumple = dias_restantes_cumple // 365
+meses_restantes_cumple = (dias_restantes_cumple % 365) // 30
+dias_restantes_cumple_final = dias_restantes_cumple % 30
+
 # Mostrar la introducción sobre el tiempo transcurrido
 st.title("Porcentaje de Vida Transcurrido")
 
-st.write(f"Han transcurrido {años_transcurridos} años, {meses_transcurridos} meses y {dias_restantes} días desde tu fecha de nacimiento hasta hoy.")
+st.write(f"Han transcurrido {años_transcurridos} años, {meses_transcurridos} meses y {dias_restantes} días desde tu fecha de nacimiento (14 de abril de 1998) hasta hoy.")
+st.write(f"Faltan {años_restantes_cumple} años, {meses_restantes_cumple} meses y {dias_restantes_cumple_final} días para tu próximo cumpleaños.")
 
 # Lista de edades a calcular (30, 50, 70, 90 años)
-edades = [30, 50, 70, 90]
+edades = [30, 50, 70, 90, 77.16]  # Incluyendo la esperanza de vida en Chile (77.16 años)
+
+# Almacenar los resultados en una lista para luego mostrarla en la tabla
+resultados = []
 
 # Recorre cada edad para calcular el porcentaje de vida y los trimestres restantes
 for edad_objetivo in edades:
@@ -34,8 +51,13 @@ for edad_objetivo in edades:
     # Trimestres restantes
     trimestres_restantes = ((edad_objetivo * 365 - dias_vividos) / 90)  # 1 trimestre = 90 días
     
-    # Mostrar los resultados para cada edad
-    st.write(f"\n## Para los {edad_objetivo} años:")
-    st.write(f"Tu edad actual es: {edad} años.")
-    st.write(f"Has vivido el {porcentaje_vivido:.2f}% de tu vida si llegas a los {edad_objetivo} años.")
-    st.write(f"Te quedan aproximadamente {trimestres_restantes:.0f} trimestres para llegar a los {edad_objetivo} años.")
+    # Guardar los resultados en la lista
+    resultados.append([edad_objetivo, porcentaje_vivido, trimestres_restantes])
+
+# Crear un DataFrame para mostrar los resultados en una tabla
+df_resultados = pd.DataFrame(resultados, columns=["Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Trimestres Restantes"])
+df_resultados["Porcentaje de Vida Vivido (%)"] = df_resultados["Porcentaje de Vida Vivido (%)"].round(2)
+df_resultados["Trimestres Restantes"] = df_resultados["Trimestres Restantes"].round(0)
+
+# Mostrar la tabla con los resultados
+st.write(df_resultados)
