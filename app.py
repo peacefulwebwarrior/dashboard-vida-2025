@@ -8,38 +8,6 @@ st.image('https://i.gifer.com/Z30J.gif', width=100)
 # Crear las secciones
 seccion = st.selectbox("Selecciona una sección", ["Vista Principal", "Modificar Datos"])
 
-# Función para calcular la edad y los detalles
-def calcular_tiempos(año_nacimiento):
-    fecha_nacimiento = datetime.date(año_nacimiento, 1, 1)
-    hoy = datetime.date.today()
-    edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
-    
-    dias_transcurridos = (hoy - fecha_nacimiento).days
-    años_transcurridos = dias_transcurridos // 365
-    meses_transcurridos = (dias_transcurridos % 365) // 30
-    dias_restantes = dias_transcurridos % 30
-    
-    # Cálculo del próximo cumpleaños
-    if (hoy.month, hoy.day) > (fecha_nacimiento.month, fecha_nacimiento.day):
-        proximo_cumple = datetime.date(hoy.year + 1, fecha_nacimiento.month, fecha_nacimiento.day)
-    else:
-        proximo_cumple = datetime.date(hoy.year, fecha_nacimiento.month, fecha_nacimiento.day)
-    
-    # Tiempo restante hasta el próximo cumpleaños
-    dias_restantes_cumple = (proximo_cumple - hoy).days
-    años_restantes_cumple = dias_restantes_cumple // 365
-    meses_restantes_cumple = (dias_restantes_cumple % 365) // 30
-    dias_restantes_cumple_final = dias_restantes_cumple % 30
-    
-    return {
-        "Edad": edad,
-        "Días Transcurridos": dias_transcurridos,
-        "Años Transcurridos": años_transcurridos,
-        "Meses Transcurridos": meses_transcurridos,
-        "Días Restantes": dias_restantes,
-        "Próximo Cumpleaños": f"{años_restantes_cumple} años, {meses_restantes_cumple} meses, {dias_restantes_cumple_final} días"
-    }
-
 # Lista de edades objetivo (30, 50, 70, 77.16 y 90 años)
 edades = [70, 77.16, 90]  # Edad objetivo en orden de menor a mayor
 
@@ -68,6 +36,42 @@ if seccion == "Modificar Datos":
 
 # Si se selecciona "Vista Principal"
 if seccion == "Vista Principal":
+    # Aseguramos que las listas de años de nacimiento y nombres estén definidas
+    años_nacimiento = años_nacimiento_por_defecto
+    nombres_personas = nombres_personas_por_defecto
+
+    # Función para calcular la edad y los detalles
+    def calcular_tiempos(año_nacimiento):
+        fecha_nacimiento = datetime.date(año_nacimiento, 1, 1)
+        hoy = datetime.date.today()
+        edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+
+        dias_transcurridos = (hoy - fecha_nacimiento).days
+        años_transcurridos = dias_transcurridos // 365
+        meses_transcurridos = (dias_transcurridos % 365) // 30
+        dias_restantes = dias_transcurridos % 30
+
+        # Cálculo del próximo cumpleaños
+        if (hoy.month, hoy.day) > (fecha_nacimiento.month, fecha_nacimiento.day):
+            proximo_cumple = datetime.date(hoy.year + 1, fecha_nacimiento.month, fecha_nacimiento.day)
+        else:
+            proximo_cumple = datetime.date(hoy.year, fecha_nacimiento.month, fecha_nacimiento.day)
+
+        # Tiempo restante hasta el próximo cumpleaños
+        dias_restantes_cumple = (proximo_cumple - hoy).days
+        años_restantes_cumple = dias_restantes_cumple // 365
+        meses_restantes_cumple = (dias_restantes_cumple % 365) // 30
+        dias_restantes_cumple_final = dias_restantes_cumple % 30
+
+        return {
+            "Edad": edad,
+            "Días Transcurridos": dias_transcurridos,
+            "Años Transcurridos": años_transcurridos,
+            "Meses Transcurridos": meses_transcurridos,
+            "Días Restantes": dias_restantes,
+            "Próximo Cumpleaños": f"{años_restantes_cumple} años, {meses_restantes_cumple} meses, {dias_restantes_cumple_final} días"
+        }
+
     # Lista para almacenar los resultados de todas las personas
     resultados_totales = []
 
