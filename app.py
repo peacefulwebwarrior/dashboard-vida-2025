@@ -33,31 +33,6 @@ st.title("Porcentaje de Vida Transcurrido")
 st.write(f"Han transcurrido {años_transcurridos} años, {meses_transcurridos} meses y {dias_restantes} días desde tu fecha de nacimiento (14 de abril de 1998) hasta hoy.")
 st.write(f"Faltan {años_restantes_cumple} años, {meses_restantes_cumple} meses y {dias_restantes_cumple_final} días para tu próximo cumpleaños.")
 
-# Lista de edades a calcular (30, 50, 70, 90 años)
-edades = [30, 50, 70, 90, 77.16]  # Incluyendo la esperanza de vida en Chile (77.16 años)
+# Lista de edades a calc
 
-# Almacenar los resultados en una lista para luego mostrarla en la tabla
-resultados = []
 
-# Recorre cada edad para calcular el porcentaje de vida y los trimestres restantes
-for edad_objetivo in edades:
-    # Total de días hasta la edad objetivo (en años * 365)
-    total_vida_objetivo = edad_objetivo * 365  
-    dias_vividos = (hoy - fecha_nacimiento).days
-    
-    # Porcentaje de vida vivido hasta la edad objetivo
-    porcentaje_vivido = (dias_vividos / total_vida_objetivo) * 100
-    
-    # Trimestres restantes
-    trimestres_restantes = ((edad_objetivo * 365 - dias_vividos) / 90)  # 1 trimestre = 90 días
-    
-    # Guardar los resultados en la lista
-    resultados.append([edad_objetivo, porcentaje_vivido, trimestres_restantes])
-
-# Crear un DataFrame para mostrar los resultados en una tabla
-df_resultados = pd.DataFrame(resultados, columns=["Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Trimestres Restantes"])
-df_resultados["Porcentaje de Vida Vivido (%)"] = df_resultados["Porcentaje de Vida Vivido (%)"].round(2)
-df_resultados["Trimestres Restantes"] = df_resultados["Trimestres Restantes"].round(0)
-
-# Mostrar la tabla con los resultados
-st.write(df_resultados)
