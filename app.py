@@ -70,6 +70,7 @@ df_resultados = pd.DataFrame(resultados, columns=["Edad Objetivo", "Porcentaje d
 
 # Función de estilo para colorear celdas
 def aplicar_colores(x):
+    # Estilizamos solo las columnas con valores numéricos
     return x.style.applymap(lambda color: color, subset=["Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes"])
 
 # Mostrar la tabla con los resultados y el estilo aplicado usando st.dataframe()
