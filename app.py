@@ -1,6 +1,7 @@
 import streamlit as st
 import datetime
 import pandas as pd
+import time
 
 # Establecer la fecha base como 14 de abril de 1998
 fecha_nacimiento = datetime.date(1998, 4, 14)
@@ -33,6 +34,46 @@ st.title("Porcentaje de Vida Transcurrido")
 st.write(f"Han transcurrido {años_transcurridos} años, {meses_transcurridos} meses y {dias_restantes} días desde tu fecha de nacimiento (14 de abril de 1998) hasta hoy.")
 st.write(f"Faltan {años_restantes_cumple} años, {meses_restantes_cumple} meses y {dias_restantes_cumple_final} días para tu próximo cumpleaños.")
 
-# Lista de edades a calc
+# Lista de edades a calcular (30, 50, 70, 90 años y esperanza de vida en Chile)
+edades = [30, 50, 70, 90, 77.16]  # Incluyendo la esperanza de vida en Chile (77.16 años)
 
+# Almacenar los resultados en una lista para luego mostrarla en la tabla
+resultados = []
 
+# Recorre cada edad para calcular el porcentaje de vida, los trimestres restantes y los años restantes
+for edad_objetivo in edades:
+    # Total de días hasta la edad objetivo (en años * 365)
+    total_vida_objetivo = edad_objetivo * 365  
+    dias_vividos = (hoy - fecha_nacimiento).days
+    
+    # Porcentaje de vida vivido hasta la edad objetivo
+    porcentaje_vivido = (dias_vividos / total_vida_objetivo) * 100
+    
+    # Cambiar color dependiendo del porcentaje vivido
+    if porcentaje_vivido > 80:
+        color = "red"
+    elif porcentaje_vivido > 50:
+        color = "orange"
+    else:
+        color = "green"
+    
+    # Trimestres restantes
+    trimestres_restantes = ((edad_objetivo * 365 - dias_vividos) / 90)  # 1 trimestre = 90 días
+    
+    # Años restantes
+    años_restantes = (edad_objetivo - años_transcurridos)
+    
+    # Guardar los resultados en la lista
+    resultados.append([edad_objetivo, porcentaje_vivido, trimestres_restantes, años_restantes, color])
+
+# Crear un DataFrame para mostrar los resultados en una tabla
+df_resultados = pd.DataFrame(resultados, columns=["Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Trimestres Restantes", "Años Restantes", "Color"])
+df_resultados["Porcentaje de Vida Vivido (%)"] = df_resultados["Porcentaje de Vida Vivido (%)"].round(2)
+df_resultados["Trimestres Restantes"] = df_resultados["Trimestres Restantes"].round(0)
+df_resultados["Años Restantes"] = df_resultados["Años Restantes"].round(0)
+
+# Mostrar la tabla con los resultados y cambio de color en los textos
+for i, row in df_resultados.iterrows():
+    st.markdown(f'<p style="color:{row["Color"]}">{row["Edad Objetivo"]} años: {row["Porcentaje de Vida Vivido (%)"]}%</p>', unsafe_allow_html=True)
+
+st.write(df_resultados)
