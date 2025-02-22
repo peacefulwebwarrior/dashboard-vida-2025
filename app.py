@@ -8,18 +8,34 @@ fecha_nacimiento = st.date_input('Selecciona tu fecha de nacimiento', datetime.d
 hoy = datetime.date.today()
 edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
 
-# Cálculo de porcentaje de vida
-total_vida_30 = 30 * 365  # Total de días hasta los 30 años
-dias_vividos = (hoy - fecha_nacimiento).days
-porcentaje_vivido = (dias_vividos / total_vida_30) * 100
+# Calcula el tiempo transcurrido hasta hoy
+dias_transcurridos = (hoy - fecha_nacimiento).days
+años_transcurridos = dias_transcurridos // 365
+meses_transcurridos = (dias_transcurridos % 365) // 30
+dias_restantes = dias_transcurridos % 30
 
-# Cálculo de trimestres restantes
-trimestres_restantes_30 = ((30 * 365 - dias_vividos) / 90)  # 1 trimestre = 90 días
-
-# Mostrar la información
+# Mostrar la introducción sobre el tiempo transcurrido
 st.title("Porcentaje de Vida Transcurrido")
 
-# Mostrar los resultados
-st.write(f"Tu edad actual es: {edad} años.")
-st.write(f"Has vivido el {porcentaje_vivido:.2f}% de tu vida si llegas a los 30 años.")
-st.write(f"Te quedan aproximadamente {trimestres_restantes_30:.0f} trimestres para llegar a los 30 años.")
+st.write(f"Han transcurrido {años_transcurridos} años, {meses_transcurridos} meses y {dias_restantes} días desde tu fecha de nacimiento hasta hoy.")
+
+# Lista de edades a calcular (30, 50, 70, 90 años)
+edades = [30, 50, 70, 90]
+
+# Recorre cada edad para calcular el porcentaje de vida y los trimestres restantes
+for edad_objetivo in edades:
+    # Total de días hasta la edad objetivo (en años * 365)
+    total_vida_objetivo = edad_objetivo * 365  
+    dias_vividos = (hoy - fecha_nacimiento).days
+    
+    # Porcentaje de vida vivido hasta la edad objetivo
+    porcentaje_vivido = (dias_vividos / total_vida_objetivo) * 100
+    
+    # Trimestres restantes
+    trimestres_restantes = ((edad_objetivo * 365 - dias_vividos) / 90)  # 1 trimestre = 90 días
+    
+    # Mostrar los resultados para cada edad
+    st.write(f"\n## Para los {edad_objetivo} años:")
+    st.write(f"Tu edad actual es: {edad} años.")
+    st.write(f"Has vivido el {porcentaje_vivido:.2f}% de tu vida si llegas a los {edad_objetivo} años.")
+    st.write(f"Te quedan aproximadamente {trimestres_restantes:.0f} trimestres para llegar a los {edad_objetivo} años.")
