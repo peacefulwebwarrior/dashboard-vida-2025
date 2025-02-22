@@ -3,7 +3,7 @@ import datetime
 import pandas as pd
 
 # Cargar el GIF de reloj de arena
-st.image('https://media.giphy.com/media/xT0GqcIb3V2FYFnlJq/giphy.gif', width=100)
+st.image('https://i.gifer.com/Z30J.gif', width=100)
 
 
 # Crear una lista con los años de nacimiento por defecto
