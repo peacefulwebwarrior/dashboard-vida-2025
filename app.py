@@ -72,41 +72,29 @@ if seccion == "Vista Principal":
             "Próximo Cumpleaños": f"{años_restantes_cumple} años, {meses_restantes_cumple} meses, {dias_restantes_cumple_final} días"
         }
 
-    # Lista para almacenar los resultados de todas las personas
-    resultados_totales = []
+    # Obtener el resultado de la Persona 1
+    año = años_nacimiento[0]
+    nombre = nombres_personas[0]
+    tiempos = calcular_tiempos(año)
 
-    # Calcular los resultados para cada persona
-    for idx, (año, nombre) in enumerate(zip(años_nacimiento, nombres_personas)):
-        resultados = []
-        for edad_objetivo in edades:
-            # Obtener el tiempo transcurrido para la persona actual
-            tiempos = calcular_tiempos(año)
+    # Total de días hasta la edad objetivo (en años * 365)
+    edad_objetivo = 77.16  # Edad promedio de vida
+    total_vida_objetivo = edad_objetivo * 365
+    porcentaje_vivido = (tiempos["Días Transcurridos"] / total_vida_objetivo) * 100
 
-            # Total de días hasta la edad objetivo (en años * 365)
-            total_vida_objetivo = edad_objetivo * 365
-            porcentaje_vivido = (tiempos["Días Transcurridos"] / total_vida_objetivo) * 100
+    # Años restantes
+    años_restantes = (edad_objetivo - tiempos["Años Transcurridos"])
 
-            # Años restantes
-            años_restantes = (edad_objetivo - tiempos["Años Transcurridos"])
+    # Mostrar la información de la Persona 1
+    st.write(f"**{nombre}**")
+    st.write(f"Edad actual: {tiempos['Edad']} | Edad Objetivo: {edad_objetivo} | Años Restantes: {años_restantes}")
+    
+    # Mostrar barra de progreso del porcentaje de vida vivido
+    st.progress(int(porcentaje_vivido))
 
-            # Guardar los resultados para la persona actual
-            resultados.append([nombre, tiempos["Edad"], edad_objetivo, porcentaje_vivido, años_restantes])
+    # Mostrar el porcentaje de vida vivido
+    st.write(f"Porcentaje de Vida Vivido: {porcentaje_vivido:.2f}%")
 
-        resultados_totales.extend(resultados)
+    # Mostrar la imagen de reloj de arena con animación
+    st.image('https://i.gifer.com/Z30J.gif', width=200)
 
-    # Crear un DataFrame con los resultados
-    df_resultados = pd.DataFrame(resultados_totales, columns=["Persona", "Edad Actual", "Edad Objetivo", "Porcentaje de Vida Vivido (%)", "Años Restantes"])
-
-    # Filtrar los resultados donde el porcentaje de vida vivido es menor al 100%
-    df_resultados_filtrados = df_resultados[df_resultados["Porcentaje de Vida Vivido (%)"] < 100]
-
-    # Mostrar la tabla con los resultados filtrados
-    for index, row in df_resultados_filtrados.iterrows():
-        st.write(f"**{row['Persona']}**")
-        st.write(f"Edad actual: {row['Edad Actual']} | Edad Objetivo: {row['Edad Objetivo']} | Años Restantes: {row['Años Restantes']}")
-        
-        # Mostrar barra de progreso del porcentaje de vida vivido
-        st.progress(int(row['Porcentaje de Vida Vivido (%)']))
-
-        # Mostrar el porcentaje de vida vivido
-        st.write(f"Porcentaje de Vida Vivido: {row['Porcentaje de Vida Vivido (%)']:.2f}%")
